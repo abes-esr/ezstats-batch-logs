@@ -1,4 +1,4 @@
-FROM alpine:latest as ezstats-batch-logs-image
+FROM alpine:latest as ezstats-batch-logs
 RUN apk add --no-cache --update docker openrc jq
 RUN rc-update add docker boot
 
