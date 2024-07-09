@@ -1,7 +1,7 @@
 #!/bin/bash
 ##chemin vers le point de montage ezstats-logs:/log
 
-RESULT_DIR="/home/node/logtheses/logs/2024"
+RESULT_DIR="/home/node/logtheses/logs/data/thesesfr/logs/2024"
 #RESULT_DIR="/home/node/logtheses/logs/$(date +%Y)/$(date +%m)"
 mkdir -p "$RESULT_DIR"
 
