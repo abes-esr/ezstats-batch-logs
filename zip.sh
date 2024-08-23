@@ -18,7 +18,9 @@ do
 
         #Si le fichier est zippe, il faudra utiliser zcat
         if [[ "$FichierResultat" == *"gz"* ]] ;then
-                CAT_COMMAND="zcat"
+          CAT_COMMAND="zcat"
+        else
+          CAT_COMMAND="cat"
         fi
 
         #Recuperation du repertoire $RepertoireResultat
@@ -28,16 +30,18 @@ do
 
         #Si le repertoire $RepertoireResultat n'existe pas, on le cree
         if [ ! -d $RepertoireResultat ]; then
-                        mkdir -p $RepertoireResultat
+          mkdir -p $RepertoireResultat
         fi
 
         if [ ! -f ${FichierResultat}.log ]; then
-                        ${CAT_COMMAND} ${SOURCE_FILE} | \
-                        jq -r 'select(.container.name == "theses-rp") | .event.original' | \
-                        grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}" | \
-                        sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
-                        sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' \
-                        > "${FichierResultat}.log"
+          echo "traitement du fichier : ${FichierResultat}"
+
+          ${CAT_COMMAND} ${SOURCE_FILE} | \
+          jq -r 'select(.container.name == "theses-rp") | .event.original' | \
+          grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}" | \
+          sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
+          sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' \
+          > "${FichierResultat}.log"
         fi
 
 done
