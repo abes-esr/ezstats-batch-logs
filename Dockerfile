@@ -8,6 +8,7 @@ RUN apk add --no-cache --update tzdata
 ENV TZ="Europe/Paris"
 COPY ./entrypoint.sh /
 COPY ./zip.sh /
+COPY ./recupRaw.sh /
 RUN chmod +x /entrypoint.sh
 RUN chmod +x /zip.sh
 RUN chmod +x /recupRaw.sh
