@@ -34,7 +34,7 @@ do
         fi
 
         if [ ! -f ${FichierResultat}.log ]; then
-          echo "traitement du fichier : ${FichierResultat}"
+          echo "traitement du fichier : ${FichierResultat}.log"
 
           #grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}|^\[" : Suppression des logs SAML et des logs d'erreurs Proxy
           #sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passés à 0.0)

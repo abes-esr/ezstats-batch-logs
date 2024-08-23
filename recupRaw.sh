@@ -11,7 +11,7 @@ do
 
         RepertoireResultat=$(dirname $FichierResultat)
 
-        echo "traitement du fichier : ${FichierResultat}"
+        echo "traitement du fichier : ${FichierResultat}.log"
 
         #grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}|^\[" : Suppression des logs SAML et des logs d'erreurs Proxy
         #sed -E 's/\\"/"/g; s/.$//; s/^.//' : Unescape
