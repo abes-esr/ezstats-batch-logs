@@ -36,9 +36,13 @@ do
         if [ ! -f ${FichierResultat}.log ]; then
           echo "traitement du fichier : ${FichierResultat}"
 
+          #grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}|^\[" : Suppression des logs SAML et des logs d'erreurs Proxy
+          #sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passés à 0.0)
+          #sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' : anonymisation des logins Shibboleth (adresse mail supprimée)
+
           ${CAT_COMMAND} ${SOURCE_FILE} | \
           jq -r 'select(.container.name == "theses-rp") | .event.original' | \
-          grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}" | \
+          grep -v -E "^20[0-9]{2}-[0-9]{2}-[0-9]{2}|^\[" | \
           sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
           sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' \
           > "${FichierResultat}.log"
