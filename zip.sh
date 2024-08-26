@@ -5,7 +5,8 @@ SOURCE_DIR="/home/node/logstash"
 RESULT_DIR="/home/node/logtheses/logs/data/thesesfr/logs"
 CAT_COMMAND="cat"
 
-for SOURCE_FILE in $(ls $SOURCE_DIR/*/*/logstash-*)
+#On prend les fichiers qui ont plus de 7 jours : car logstash écrit parfois dans les fichiers après la date du jour
+for SOURCE_FILE in $(find $SOURCE_DIR/*/*/logstash-* -type f -mtime +7)
 do
         #Replace du chemin SOURCE par le chemin RESULT
         #Les @ servent a la place de / , car on a des / dans les valeurs a remplacer
@@ -33,8 +34,8 @@ do
           mkdir -p $RepertoireResultat
         fi
 
-        if [ ! -f ${FichierResultat}.log ]; then
-          echo "traitement du fichier : ${FichierResultat}.log"
+        if [ ! -f ${FichierResultat}.log.gz ]; then
+          echo "traitement du fichier : ${FichierResultat}.log.gz"
 
           #grep -E "^[0-9]{1,3}\." : On ne conserve que les lignes commençants par 3 chiffres (début d'adresse IP). Pas les lignes RENATER_SP ou les erreurs Proxy
           #sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passés à 0.0)
@@ -44,8 +45,9 @@ do
           jq -r 'select(.container.name == "theses-rp") | .event.original' | \
           grep -E "^[0-9]{1,3}\." | \
           sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
-          sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' \
-          > "${FichierResultat}.log"
+          sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' | \
+          gzip \
+          > "${FichierResultat}.log.gz"
         fi
 
 done
