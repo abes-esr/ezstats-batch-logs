@@ -12,7 +12,7 @@ do
 
         RepertoireResultat=$(dirname $FichierResultat)
 
-        echo "traitement du fichier : ${FichierResultat}.log"
+        echo "traitement du fichier : ${FichierResultat}.log.gz"
 
         #grep -E "^\"[0-9]{1,3}\." : On ne conserve que les lignes commencants par 3 chiffres (debut d'adresse IP). Pas les lignes RENATER_SP ou les erreurs Proxy
         #sed -E 's/\\"/"/g; s/.$//; s/^.//' : Unescape
@@ -23,6 +23,7 @@ do
         grep -E "^\"[0-9]{1,3}\." | \
         sed -E 's/\\"/"/g; s/.$//; s/^.//' | \
         sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
-        sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' \
-        > "${FichierResultat}.log"
+        sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' | \
+        gzip \
+        > "${FichierResultat}.log.gz"
 done
