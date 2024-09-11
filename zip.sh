@@ -44,7 +44,7 @@ if [[ $(ps -edf | grep -c "zip.sh") = 3 ]];then
             #sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' : anonymisation des logins Shibboleth (adresse mail supprimee)
 
             ${CAT_COMMAND} ${SOURCE_FILE} | \
-            jq -r 'select(.container.name == "theses-rp") | .event.original' | \
+            jq -r 'select(.container.name == "theses-rp") | .message' | \
             grep -E "^[0-9]{1,3}\." | \
             sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
             sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' | \
