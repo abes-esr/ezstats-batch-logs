@@ -12,8 +12,8 @@ if [[ $(ps -edf | grep -c "zip.sh") = 3 ]];then
           #Replace du chemin SOURCE par le chemin RESULT
           #Les @ servent a la place de / , car on a des / dans les valeurs a remplacer
           #Exemple :
-          #/home/node/logstash/2024/04/logstash-appli-theses-rp-2024.04.25 sera remplace en :
-          #/home/node/logtheses/logs/data/thesesfr/logs/2024/04/logstash-appli-theses-rp-2024.04.25
+          #/home/node/logstash/2024/04/logstash-appli-theses-rp-2024.04.25.gz sera remplace en :
+          #/home/node/logtheses/logs/data/thesesfr/logs/2024/04/logstash-appli-theses-rp-2024.04.25.gz.log.gz
                           #Voir : https://stackoverflow.com/questions/3306007/replace-a-string-in-shell-script-using-a-variable
 
           FichierResultat=$(echo $SOURCE_FILE | sed -e "s@$SOURCE_DIR@$RESULT_DIR@g")
@@ -46,6 +46,7 @@ if [[ $(ps -edf | grep -c "zip.sh") = 3 ]];then
             ${CAT_COMMAND} ${SOURCE_FILE} | \
             jq -r 'select(.container.name == "theses-rp") | .message' | \
             grep -E "^[0-9]{1,3}\." | \
+            grep -v "UptimeRobot" | \
             sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
             sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' | \
             gzip \
