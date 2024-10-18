@@ -14,13 +14,15 @@ do
 
         echo "traitement du fichier : ${FichierResultat}.log.gz"
 
-        #grep -E "^\"[0-9]{1,3}\." : On ne conserve que les lignes commencants par 3 chiffres (debut d'adresse IP). Pas les lignes RENATER_SP ou les erreurs Proxy
-        #sed -E 's/\\"/"/g; s/.$//; s/^.//' : Unescape
-        #sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passes à 0.0)
-        #sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' : anonymisation des logins Shibboleth (adresse mail supprimee)
+        # grep -E "^\"[0-9]{1,3}\." : On ne conserve que les lignes commencants par 3 chiffres (debut d'adresse IP). Pas les lignes RENATER_SP ou les erreurs Proxy
+        # grep -v "UptimeRobot" : On ne conserve pas les lignes contenant "UptimeRobot" (sonde interne)
+        # sed -E 's/\\"/"/g; s/.$//; s/^.//' : Unescape
+        # sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passes à 0.0)
+        # sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' : anonymisation des logins Shibboleth (adresse mail supprimee)
 
         zcat ${SOURCE_FILE} | \
         grep -E "^\"[0-9]{1,3}\." | \
+        grep -v "UptimeRobot" | \
         sed -E 's/\\"/"/g; s/.$//; s/^.//' | \
         sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' | \
         sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' | \
