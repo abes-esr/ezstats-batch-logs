@@ -39,10 +39,10 @@ if [[ $(ps -edf | grep -c "zip.sh") = 3 ]];then
             dt=$(date '+%d/%m/%Y %H:%M:%S')
             echo "$dt traitement du fichier : ${FichierResultat}.log.gz"
 
-            # grep -E "^[0-9]{1,3}\." : On ne conserve que les lignes commencants par 3 chiffres (debut d'adresse IP). Pas les lignes RENATER_SP ou les erreurs Proxy
-            # grep -v "UptimeRobot" : On ne conserve pas les lignes contenant UptimeRobot (sonde interne)
-            # sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passes à 0.0)
-            # sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' : anonymisation des logins Shibboleth (adresse mail supprimee)
+            #grep -E "^[0-9]{1,3}\." : On ne conserve que les lignes commencants par 3 chiffres (debut d'adresse IP). Pas les lignes RENATER_SP ou les erreurs Proxy
+            #grep -v "UptimeRobot" : On ne conserve pas les lignes contenants UptimeRobot
+            #sed -E 's/([0-9]{1,3}\.[0-9]{1,3})\.[0-9]{1,3}\.[0-9]{1,3}/\1.0.0/g' : anonymisation des IPS (2 derniers chiffres passes à 0.0)
+            #sed -E 's/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b//g' : anonymisation des logins Shibboleth (adresse mail supprimee)
 
             ${CAT_COMMAND} ${SOURCE_FILE} | \
             jq -r 'select(.container.name == "theses-rp") | .message' | \

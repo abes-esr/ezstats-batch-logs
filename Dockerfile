@@ -9,7 +9,9 @@ ENV TZ="Europe/Paris"
 COPY ./entrypoint.sh /
 COPY ./zip.sh /
 COPY ./recupRaw.sh /
+COPY ./recupRaw0924.sh /
 RUN chmod +x /entrypoint.sh
 RUN chmod +x /zip.sh
 RUN chmod +x /recupRaw.sh
+RUN chmod +x /recupRaw0924.sh
 ENTRYPOINT ["/entrypoint.sh"]
