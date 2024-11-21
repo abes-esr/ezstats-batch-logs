@@ -7,6 +7,9 @@ SOURCE_DIR="/home/node/logstash"
 RESULT_DIR="/home/node/logtheses/logs/data/thesesfr/logs"
 
 # Decoupage du fichier contenant plusieurs jours de logs
+# Important : ajout du mot decoupe0924 pour ne pas avoir le meme debut de nom de fichier qu'un eventuel fichier de log du jour.
+# Car sinon ezp bulk efface a chaque tentative le resultat du fichier en cas d'echec de traitement
+
 zcat $SOURCE_DIR/2024/09/logstash-appli-theses-rp-2024.09.31.raw.gz | awk 'BEGIN {
     split("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec ", months, " ")
     for (a = 1; a <= 12; a++)
@@ -18,7 +21,7 @@ zcat $SOURCE_DIR/2024/09/logstash-appli-theses-rp-2024.09.31.raw.gz | awk 'BEGIN
     month = m[array[2]]
     day = substr(array[1],2)
 
-    print | "gzip > /home/node/logtheses/logs/data/thesesfr/logs/2024/09/logstash-appli-theses-rp-"year"."month"."day".raw.gz";
+    print | "gzip > /home/node/logtheses/logs/data/thesesfr/logs/2024/09/logstash-appli-theses-rp-decoupe0924-"year"."month"."day".raw.gz";
 }'
 
 
@@ -50,4 +53,4 @@ do
 done
 
 #Changement de repertoire pour les logs d'octobre
-mv $RESULT_DIR/2024/09/logstash-appli-theses-rp-2024.10* $RESULT_DIR/2024/10/
+mv $RESULT_DIR/2024/09/logstash-appli-theses-rp-decoupe0924-2024.10* $RESULT_DIR/2024/10/
